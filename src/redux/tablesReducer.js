@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 //selectors
 export const getAllTables = (state) => state.tables;
 
@@ -14,7 +15,7 @@ export const getTables = payload => ({type: FETCH_TABLES, payload});
 export const fetchTables = () => {
   return (dispatch) => {
     console.log("Próba pobrania tabel z serwera.");
-    fetch(`http://localhost:3131/tables/`)
+    fetch(`${API_URL}/tables/`)
       .then(response => response.json())
       .then(tables => {
         console.log("Pobrane tabele:", tables);
@@ -40,7 +41,7 @@ export const updateTablesRequest = (values) => {
         bill: values.bill
       }),
     }
-    fetch(`http://localhost:3131/tables${values.tableId}`, options)
+    fetch(`${API_URL}/tables/${values.tableId}`, options)
     .then(response => response.json())
     .then(updatedTable => {
       console.log("Dane przesyłane do updateTables:", updatedTable);
