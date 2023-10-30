@@ -3,14 +3,21 @@ import { useDispatch } from 'react-redux';
 import { updateTablesRequest } from '../../redux/tablesReducer';
 import { Container, Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-const TableForm = (props) => {
+const TableForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const dupa = useParams();
 
-  const [status, setStatus] = useState(props.status);
-  const [peopleAmount, setPeopleAmount] = useState(props.peopleAmount);
-  const [maxPeopleAmount, setMaxPeopleAmount] = useState(props.maxPeopleAmount);
-  const [bill, setBill] = useState(props.bill);
+  console.log(dupa)
+  const { tableId } = useParams(); // Pobieramy `tableId` z parametrów routingu
+
+  const [status, setStatus] = useState('');
+  const [peopleAmount, setPeopleAmount] = useState(0);
+  const [maxPeopleAmount, setMaxPeopleAmount] = useState(0);
+  const [bill, setBill] = useState(0);
 
   const handleStatusChange = (newStatus) => {
     setStatus(newStatus);
@@ -48,11 +55,10 @@ const TableForm = (props) => {
     setMaxPeopleAmount(newMaxPeopleAmount);
   };
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(updateTablesRequest({ ...props, status, peopleAmount, maxPeopleAmount, bill }));
+    dispatch(updateTablesRequest({ tableId, status, peopleAmount, maxPeopleAmount, bill }));
+    navigate('/');
   };
 
   return (
@@ -61,7 +67,7 @@ const TableForm = (props) => {
         <Form.Group>
           <p>
             Status:
-            <Form.Select value={status} name="status" onChange={(e) => handleStatusChange(e.target.value)}>
+            <Form.Select name="status" value={status} onChange={(e) => handleStatusChange(e.target.value)}>
               <option value="Free">Free</option>
               <option value="Busy">Busy</option>
               <option value="Cleaning">Cleaning</option>

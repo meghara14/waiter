@@ -11,7 +11,11 @@ import { useEffect } from "react";
 
 const App = () => {
   const dispatch = useDispatch();
-  useEffect(() => dispatch(fetchTables()), [dispatch]);
+
+  useEffect(() => {
+    console.log("Akcja fetchTables jest wywoływana.");
+    dispatch(fetchTables());
+  }, [dispatch]);
 
   return (
     <main>
@@ -19,7 +23,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/table/:id" element={<TablePage />} />
+          <Route path="/table/:tableId" element={<TablePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

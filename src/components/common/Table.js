@@ -1,17 +1,35 @@
-import styles from './Table.module.scss';
-import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
+import { getAllTables } from '../../redux/tablesReducer';	
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import TableForm from '../features/TableForm';
 
-const Table = (props) => {
-	return(
-		<li className={styles.table}>
-			<h3 className={styles.header}>Table {props.id}</h3>
-			<p className={styles.status}><span>Status: </span> {props.status}</p>
-			<Link to={'/table/' + props.id} className={styles.btn}>
-				<Button variant="primary" >Show more</Button>
-			</Link>
-		</li>
-	);
+const Table = () => {
+    const { tableId } = useParams();
+    const tables = useSelector(getAllTables);
+
+    const table = tables.find(table => table.id === tableId);
+
+    if (!table) {
+        return <div>Table not found</div>;
+    }
+
+    return (
+        <Container>
+            <Row key={table.id} className='mb-3 mt-3'>
+                <h2>{`Table ${table.id}`}</h2>
+                <Col md={4}>
+                    <TableForm 
+                        tableId={table.id}  // Przekazujemy tableId do TableForm
+                        status={table.status} 
+                        peopleAmount={table.peopleAmount} 
+                        maxPeopleAmount={table.maxPeopleAmount} 
+                        bill={table.bill}
+                    />    
+                </Col>
+            </Row>
+        </Container>
+    )
 }
 
 export default Table;
