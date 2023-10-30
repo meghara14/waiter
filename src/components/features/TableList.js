@@ -1,21 +1,22 @@
 import { Spinner, Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { getAllTables, updateTablesRequest } from '../../redux/tablesReducer';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { getAllTables } from '../../redux/tablesReducer';
+// import { updateTablesRequest } from '../../redux/tablesReducer';
+//import { useDispatch } from 'react-redux';
+//import { useNavigate } from 'react-router-dom';
 
 const TableList = (props) => {
     const tables = useSelector(getAllTables);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  //  const dispatch = useDispatch();
+  //  const navigate = useNavigate();
     
-    const handleSubmit = (e, id) => {
-        e.preventDefault();
-        console.log(id);
-        dispatch(updateTablesRequest(id));
-        navigate('/');
-    }  
+   // const handleSubmit = (e, id) => {
+   //     e.preventDefault();
+   //     console.log(id);
+   //     dispatch(updateTablesRequest(id));
+   //     navigate('/');
+   // }  
   
     // Dodaj warunek sprawdzający, czy tables jest tablicą
     if (!Array.isArray(tables) || tables.length === 0) {
@@ -42,9 +43,7 @@ const TableList = (props) => {
                             <Button>SHOW MORE</Button>
                         </Link>
                     </Col>
-                    <Col md={2}>
-                        <Button onClick={(e) => handleSubmit(e, table.id)}>REMOVE</Button>
-                    </Col>
+                    
                 </Row>
             ))}
         </Container>

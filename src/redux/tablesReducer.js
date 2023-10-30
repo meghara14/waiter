@@ -1,23 +1,24 @@
 //selectors
-
 export const getAllTables = (state) => state.tables;
 
 // actions
 const createActionName = actionName => `app/tables/${actionName}`;
 const UPDATE_TABLES = createActionName('UPDATE_TABLES');
+const FETCH_TABLES = createActionName('FETCH_TABLES');
 
 //action creators
 
 export const updateTables = payload => ({ type: UPDATE_TABLES, payload});
+export const getTables = payload => ({type: FETCH_TABLES, payload});
 
 export const fetchTables = () => {
   return (dispatch) => {
     console.log("Próba pobrania tabel z serwera.");
-    fetch(`http://localhost:3131/tables`)
+    fetch(`http://localhost:3131/tables/`)
       .then(response => response.json())
       .then(tables => {
         console.log("Pobrane tabele:", tables);
-        dispatch(updateTables(tables));
+        dispatch(getTables(tables));
       })
   };
 };
@@ -33,22 +34,22 @@ export const updateTablesRequest = (values) => {
       },
       body: JSON.stringify({
         id: values.tableId,
-        status: values.selectedOption,
+        status: values.status,
         peopleAmount: values.peopleAmount,
         maxPeopleAmount: values.maxPeopleAmount,
-        bill: values.billValue
+        bill: values.bill
       }),
     }
-    fetch(`http://localhost:3131/tables/${values.tableId}`, options)
+    fetch(`http://localhost:3131/tables${values.tableId}`, options)
     .then(response => response.json())
     .then(updatedTable => {
       console.log("Dane przesyłane do updateTables:", updatedTable);
       dispatch(updateTables({
         id: values.tableId,
-        status: values.selectedOption,
+        status: values.status,
         peopleAmount: values.peopleAmount,
         maxPeopleAmount: values.maxPeopleAmount,
-        bill: values.billValue
+        bill: values.bill
       }));
     })
   }
@@ -58,9 +59,20 @@ export const updateTablesRequest = (values) => {
 
 const tablesReducer = (statePart = [], action) => {
   switch (action.type) {
+    case FETCH_TABLES:
+      return [...action.payload];
     case UPDATE_TABLES:
       console.log({action})
-      return [...statePart, action.payload];
+      const newPayload = statePart.map(item => {
+        console.log(item.id, action.payload.id, item.id === action.payload.id)
+        if(item.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return item;
+        }
+      });
+
+      return newPayload;
 
 
     default:

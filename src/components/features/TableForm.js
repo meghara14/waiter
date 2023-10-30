@@ -9,9 +9,7 @@ import { useParams } from 'react-router-dom';
 const TableForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const dupa = useParams();
 
-  console.log(dupa)
   const { tableId } = useParams(); // Pobieramy `tableId` z parametrów routingu
 
   const [status, setStatus] = useState('');
