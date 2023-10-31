@@ -1,1 +1,1 @@
-https://waiter-1.meghara.repl.co/
+https://waiter-2.meghara.repl.co/
